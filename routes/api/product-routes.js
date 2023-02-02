@@ -1,15 +1,17 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-// The `/api/products` endpoint
+// -------------------- The `/api/products` endpoint
 
-// get all products
+// -------------------- get all products
 router.get('/', async (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
   try {
-    const productData = await Product.findAll();
-    ////////////////////////// DO I NEED A JOIN
+    const productData = await Product.findAll({
+      include: [{ model: Tag, through: ProductTag, as: 'tag_product'},
+      {model: Category},
+    ],
+    });
+
     res.status(200).json(productData);
   } catch (err) {
     res.status(500).json(err);
@@ -17,15 +19,13 @@ router.get('/', async (req, res) => {
 });
 
 
-// get one product
+// -------------------- get one product
 router.get('/:id', async (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
   try {
     const productData = await Product.findByPk(req.params.id, {
-      //////////////////////////
-      include: [{/* WHAT TAGS GET USED HERE????*/}]
-      //////////////////////////
+      include: [{model: Tag, through: ProductTag, as:'tag_product'},
+      {Category},
+    ],
     });
 
     if (!productData) {
@@ -39,7 +39,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// create new product
+
+// -------------------- create new product
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
@@ -61,7 +62,8 @@ router.post('/', (req, res) => {
         });
         return ProductTag.bulkCreate(productTagIdArr);
       }
-      // if no product tags, just respond
+
+      // -------------------------- if no product tags, just respond
       res.status(200).json(product);
     })
     .then((productTagIds) => res.status(200).json(productTagIds))
@@ -71,9 +73,9 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product
+
+// ------------------------------- update product data
 router.put('/:id', (req, res) => {
-  // update product data
   Product.update(req.body, {
     where: {
       id: req.params.id,
@@ -113,8 +115,25 @@ router.put('/:id', (req, res) => {
     });
 });
 
+
+// --------------------------- delete one product by its `id` value
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+  try {
+    const productData = await Product.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+
+    if (!productData) {
+      res.status(404).json({ message: `No location with this id!`});
+      return;
+    }
+
+    res.status(200).json(productData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
