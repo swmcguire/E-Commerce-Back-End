@@ -89,7 +89,7 @@ router.post('/', async (req, res) => {
 
 // ------------------------------- update product data
 
-router.put(':id', async (req, res) =>{
+/*router.put(':id', async (req, res) =>{
 try {
   const productData = await Product.update(req.body, {
     where: {
@@ -106,10 +106,10 @@ try {
 } catch (err) {
   res.status(400).json(err);
   }
-});
+});*/
 
 
-/*router.put('/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   Product.update(req.body, {
     where: {
       id: req.params.id,
@@ -147,7 +147,7 @@ try {
       // console.log(err);
       res.status(400).json(err);
     });
-});*/
+});
 
 
 // --------------------------- delete one product by its `id` value
