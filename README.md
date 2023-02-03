@@ -32,7 +32,8 @@ Once the server is listening you can put the correct file path in insomnia and r
 
 GitHub Link:  https://github.com/swmcguire/E-Commerce-Back-End.git<br>
 
-Video Link:  ![Walk Through Video ](./Assets/E-Commerce%20Walk-Through.webm)
+Video Link:
+[E-Commerce Walk-Through.webm](https://user-images.githubusercontent.com/115034890/216502953-df7e7fa9-b6b1-4b43-9e10-f899fdd3aa3f.webm)
 
 Since E-Commerce is becoming larger and larger every year my company wants to be able to compete in this industry space.  This app is the back end build out of an e-commerce site which will allow the end user to get the data they want to see, update the data they want to see, create new data, and delete data from the ecommerce database.
 
